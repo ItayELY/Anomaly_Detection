@@ -14,11 +14,15 @@ float avg(float* x, int size){
     return sum / size;
 }
 
+
+
 int main() {
     float nums[] = {10, 20, 30, 40};
-    float varience = var(nums, 4);
-
-    printf("%f", varience);
+    float nums2[] = {55, 76, 27, 35};
+    float variance = var(nums, 4);
+    float covariance = cov(nums,nums2,4);
+    printf("%f", variance);
+   // printf("%f", covariance);
     return 1;
 }
 
@@ -33,4 +37,12 @@ float var(float* x, int size){
     }
     return sum / size;
 }
+// returns the covariance of X and Y
+float cov(float* x, float* y, int size){
+    float sum = 0;
+    for(int i = 0; i < size; i++)
+        sum = sum + (x[i] - avg(x,size)) *
+                    (y[i] - avg(x, size));
+    return sum / (size - 1);
 
+}
