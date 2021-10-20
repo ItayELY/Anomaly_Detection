@@ -22,8 +22,7 @@ int main() {
     float variance = var(nums, 4);
     float covariance = cov(nums, nums2, 4);
     printf("%f", variance);
-    // printf("%f", covariance);
-    return 1;
+    printf("%f", covariance);
 }
 
 
@@ -55,8 +54,20 @@ float pearson(float *x, float *y, int size) {
     float deviation_x = sqrt(variance_x);
     float deviation_y = sqrt(variance_y);
     return (covariance / (deviation_x * deviation_y));
+}
 
+// performs a linear regression and return s the line equation
+Line linear_reg(Point** points, int size){
+    float x[size], y[size], xAvg, yAvg, a, b;
 
+    for (int i = 0; i < size; ++i) {
+        x[i] = points[i]->x;
+        y[i] = points[i]->y;
+    }
+    a = cov(x, y, size) / var(x, size);
+    b = yAvg - (a * xAvg);
+    Line* line = new Line(a, b);
+    return *line;
 }
 
 
