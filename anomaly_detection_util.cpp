@@ -15,7 +15,7 @@ float avg(float *x, int size) {
     return sum / size;
 }
 
-
+/*
 int main() {
     float nums[] = {10, 20, 30, 40};
     float nums2[] = {55, 76, 27, 35};
@@ -24,7 +24,7 @@ int main() {
     printf("%f", variance);
     printf("%f", covariance);
 }
-
+*/
 
 // returns the variance of X and Y
 float var(float *x, int size) {
@@ -58,16 +58,21 @@ float pearson(float *x, float *y, int size) {
 
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size){
-    float x[size], y[size], xAvg, yAvg, a, b;
+    float *x = new float(size), *y = new float(size);
+    float xAvg, yAvg, a, b;
 
     for (int i = 0; i < size; ++i) {
         x[i] = points[i]->x;
         y[i] = points[i]->y;
     }
+
+    xAvg = avg(x, size);
+    yAvg = avg(y, size);
+
     a = cov(x, y, size) / var(x, size);
     b = yAvg - (a * xAvg);
-    Line* line = new Line(a, b);
-    return *line;
+
+    return Line(a, b);
 }
 
 // returns the deviation between point p and the line equation of the points
