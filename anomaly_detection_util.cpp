@@ -22,7 +22,9 @@ int main() {
     float variance = var(nums, 4);
     float covariance = cov(nums, nums2, 4);
     printf("%f", variance);
-    printf("%f", covariance);
+    // printf("%f", covariance);
+    std::cout << "covariance is " << covariance;
+    return 1;
 }
 */
 
@@ -38,12 +40,16 @@ float var(float *x, int size) {
 
 // returns the covariance of X and Y
 float cov(float *x, float *y, int size) {
-    float sum = 0;
-    for (int i = 0; i < size; i++)
-        sum = sum + (x[i] - avg(x, size)) *
-                    (y[i] - avg(x, size));
 
-    return sum / (size - 1);
+    float result = 0;
+    float *multi = new float[size];
+    for (int i = 0; i < size; i++) {
+        multi[i] = x[i] * y[i];
+    }
+    result = (avg(multi, size) - avg(x, size) * avg(y, size));
+    free(multi);
+    return (result);
+
 }
 
 // returns the Pearson correlation coefficient of X and Y
@@ -57,7 +63,7 @@ float pearson(float *x, float *y, int size) {
 }
 
 // performs a linear regression and return s the line equation
-Line linear_reg(Point** points, int size){
+Line linear_reg(Point **points, int size) {
     float *x = new float(size), *y = new float(size);
     float xAvg, yAvg, a, b;
 
@@ -76,15 +82,16 @@ Line linear_reg(Point** points, int size){
 }
 
 // returns the deviation between point p and the line equation of the points
-float dev(Point p,Point** points, int size){
+float dev(Point p, Point **points, int size) {
     Line line = linear_reg(points, size);
     return dev(p, line);
 }
 
 // returns the deviation between point p and the line
-float dev(Point p,Line l){
+float dev(Point p, Line l) {
     float yPointOnAxis = l.f(p.x);
     return abs(p.y - yPointOnAxis);
 }
+
 
 
