@@ -42,12 +42,12 @@ float var(float *x, int size) {
 float cov(float *x, float *y, int size) {
 
     float result = 0;
-    float *multi = new float[size];
+    float* multi = new float[size];
     for (int i = 0; i < size; i++) {
         multi[i] = x[i] * y[i];
     }
     result = (avg(multi, size) - avg(x, size) * avg(y, size));
-    free(multi);
+    delete[] multi;
     return (result);
 
 }
@@ -64,7 +64,7 @@ float pearson(float *x, float *y, int size) {
 
 // performs a linear regression and return s the line equation
 Line linear_reg(Point **points, int size) {
-    float *x = new float(size), *y = new float(size);
+    float *x = new float[size], *y = new float[size];
     float xAvg, yAvg, a, b;
 
     for (int i = 0; i < size; ++i) {
@@ -77,7 +77,8 @@ Line linear_reg(Point **points, int size) {
 
     a = cov(x, y, size) / var(x, size);
     b = yAvg - (a * xAvg);
-
+    delete[] x;
+    delete[] y;
     return Line(a, b);
 }
 
