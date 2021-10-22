@@ -1,6 +1,5 @@
-//
-// Created by itaye on 19/10/2021.
-//
+// Created By Itay Elyashev, id:212356364
+// And Yonadav Leibowitz, id:207424490
 #include <stdio.h>
 #include <iostream>
 #include "anomaly_detection_util.h"
