@@ -32,7 +32,7 @@ float var(float *x, int size) {
     float average = avg(x, size);
     float sum = 0;
     for (int i = 0; i < size; ++i) {
-        sum += pow(abs(x[i] - average), 2.0);
+        sum += pow(x[i] - average, 2.0);
     }
     return sum / size;
 }
@@ -47,8 +47,7 @@ float cov(float *x, float *y, int size) {
     }
     result = (avg(multi, size) - avg(x, size) * avg(y, size));
     delete[] multi;
-    return (result);
-
+     return (result);
 }
 
 // returns the Pearson correlation coefficient of X and Y
@@ -90,7 +89,7 @@ float dev(Point p, Point **points, int size) {
 // returns the deviation between point p and the line
 float dev(Point p, Line l) {
     float yPointOnAxis = l.f(p.x);
-    return abs(p.y - yPointOnAxis);
+    return fabs(p.y - yPointOnAxis);
 }
 
 
