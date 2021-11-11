@@ -14,18 +14,6 @@ float avg(float *x, int size) {
     return sum / size;
 }
 
-/*
-int main() {
-    float nums[] = {10, 20, 30, 40};
-    float nums2[] = {55, 76, 27, 35};
-    float variance = var(nums, 4);
-    float covariance = cov(nums, nums2, 4);
-    printf("%f", variance);
-    // printf("%f", covariance);
-    std::cout << "covariance is " << covariance;
-    return 1;
-}
-*/
 
 // returns the variance of X and Y
 float var(float *x, int size) {
