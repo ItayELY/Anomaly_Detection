@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/timeseries.cpp
+timeseries.h
+C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/timeseries.h
+fstream
+-
+sstream
+-
+
+C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/timeseries.h
+vector
+-
+stdio.h
+-
+string.h
+-
+iostream
+-
+fstream
+-
+
