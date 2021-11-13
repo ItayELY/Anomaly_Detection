@@ -12,18 +12,21 @@
 using namespace std;
 
 class TimeSeries{
-    vector<string> names;
-    vector<vector<float>> values;
+
+    struct Param
+    {
+        string name;
+        vector<float> vals;
+    };
+
+private:
+    vector<Param> m_table;
+
 public:
-	TimeSeries(const char* CSVfileName){
-        // File pointer
-        fstream fin;
-        // Open an existing file
-        fin.open(CSVfileName, ios::in);
-
-
-	}
-
+	TimeSeries(const char* CSVfileName);
+    vector<float> GetParameterVals(const string& param);
+    vector<float> GetValuesAtTime(unsigned int zeroBasedTime);
+    void printTable();
 };
 
 
