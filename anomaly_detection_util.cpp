@@ -6,7 +6,7 @@
 #include <cmath>
 
 // returns average of floats
-float avg(float *x, int size) {
+float avg(std::vector<float> x, int size) {
     float sum = 0;
     for (int i = 0; i < size; ++i) {
         sum += x[i];
@@ -16,7 +16,8 @@ float avg(float *x, int size) {
 
 
 // returns the variance of X and Y
-float var(float *x, int size) {
+float var(std::vector<float> x, int size) {
+    x.resize(size);
     float average = avg(x, size);
     float sum = 0;
     for (int i = 0; i < size; ++i) {
@@ -26,20 +27,24 @@ float var(float *x, int size) {
 }
 
 // returns the covariance of X and Y
-float cov(float *x, float *y, int size) {
+float cov(std::vector<float> x, std::vector<float> y, int size) {
+    x.resize(size);
+    y.resize(size);
 
     float result = 0;
-    float* multi = new float[size];
+    std::vector<float> multi;
     for (int i = 0; i < size; i++) {
-        multi[i] = x[i] * y[i];
+        multi.push_back(x[i] * y[i]);
     }
     result = (avg(multi, size) - avg(x, size) * avg(y, size));
-    delete[] multi;
-     return (result);
+    return (result);
 }
 
 // returns the Pearson correlation coefficient of X and Y
-float pearson(float *x, float *y, int size) {
+float pearson(std::vector<float> x, std::vector<float> y, int size) {
+    x.resize(size);
+    y.resize(size);
+
     float covariance = cov(x, y, size);
     float variance_x = var(x, size);
     float variance_y = var(y, size);
@@ -49,13 +54,15 @@ float pearson(float *x, float *y, int size) {
 }
 
 // performs a linear regression and return s the line equation
-Line linear_reg(Point **points, int size) {
-    float *x = new float[size], *y = new float[size];
+Line linear_reg(std::vector<Point> points, int size) {
+    points.resize(size);
+
+    std::vector<float> x, y;
     float xAvg, yAvg, a, b;
 
     for (int i = 0; i < size; ++i) {
-        x[i] = points[i]->x;
-        y[i] = points[i]->y;
+        x[i] = points[i].x;
+        y[i] = points[i].y;
     }
 
     xAvg = avg(x, size);
@@ -63,13 +70,13 @@ Line linear_reg(Point **points, int size) {
 
     a = cov(x, y, size) / var(x, size);
     b = yAvg - (a * xAvg);
-    delete[] x;
-    delete[] y;
     return Line(a, b);
 }
 
 // returns the deviation between point p and the line equation of the points
-float dev(Point p, Point **points, int size) {
+float dev(Point p, std::vector<Point> points, int size) {
+    points.resize(size);
+
     Line line = linear_reg(points, size);
     return dev(p, line);
 }

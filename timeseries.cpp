@@ -37,7 +37,7 @@ TimeSeries::TimeSeries(const char *CSVfileName) {
     }
 }
 
-vector<float> TimeSeries::GetParameterVals(const string &param) {
+vector<float> TimeSeries::GetParameterVals(const string &param) const {
     for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
         if (!paramStruct->name.compare(param)) {
             return paramStruct->vals;
@@ -60,10 +60,18 @@ void TimeSeries::printTable() {
     }
 }
 
-vector<string> TimeSeries::GetParameters() {
+vector<string> TimeSeries::GetParameters() const {
     vector<string> params;
     for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
         params.push_back(paramStruct->name);
     }
     return params;
+}
+
+int TimeSeries::GetNumOfParameters() const {
+    int counter = 0;
+    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
+        counter++;
+    }
+    return counter;
 }
