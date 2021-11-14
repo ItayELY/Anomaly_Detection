@@ -54,11 +54,32 @@ vector<float> TimeSeries::GetValuesAtTime(unsigned int zeroBasedTime) {
 }
 
 
-void TimeSeries::printTable() {
+void TimeSeries::PrintTable() {
+    vector<string> names = GetParameters();
+    int numOfParams = GetNumOfParameters();
+    vector<float> row;
     for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        std::cout << (paramStruct->name) << "\n";
+        std::cout << (paramStruct->name);
+        cout<<"\t";
     }
+
+    cout<<"\n";
+
+    for (int i = 0; i<numOfParams; i++){
+        row = GetValuesAtTime(i);
+        for (int j=0; j<row.size(); j++)
+        {
+            cout << row[j];
+            cout<<"\t";
+            if(j==row.size()-1){
+                cout<<"\n";
+            }
+        }
+    }
+
+
 }
+
 
 vector<string> TimeSeries::GetParameters() const {
     vector<string> params;

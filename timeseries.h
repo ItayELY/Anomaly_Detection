@@ -28,7 +28,7 @@ public:
     vector<float> GetValuesAtTime(unsigned int zeroBasedTime);
     vector<string> GetParameters() const;
     int GetNumOfParameters() const;
-    void printTable();
+    void PrintTable();
 };
 
 

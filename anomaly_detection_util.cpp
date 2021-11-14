@@ -57,7 +57,7 @@ float pearson(std::vector<float> x, std::vector<float> y, int size) {
 Line linear_reg(std::vector<Point> points, int size) {
     points.resize(size);
 
-    std::vector<float> x, y;
+    std::vector<float> x(size), y(size);
     float xAvg, yAvg, a, b;
 
     for (int i = 0; i < size; ++i) {
