@@ -1,3 +1,0 @@
-C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/cmake-build-debug/CMakeFiles/Anomaly_Detection.dir
-C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Yonad/Google Drive/Computer Sync/Computer Science/advanced_programming_2021/Anomaly_Detection/cmake-build-debug/CMakeFiles/rebuild_cache.dir
