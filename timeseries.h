@@ -26,6 +26,7 @@ public:
 	TimeSeries(const char* CSVfileName);
     vector<float> GetParameterVals(const string& param);
     vector<float> GetValuesAtTime(unsigned int zeroBasedTime);
+    vector<string> GetParameters();
     void printTable();
 };
 

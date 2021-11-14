@@ -59,3 +59,11 @@ void TimeSeries::printTable() {
         std::cout << (paramStruct->name) << "\n";
     }
 }
+
+vector<string> TimeSeries::GetParameters() {
+    vector<string> params;
+    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
+        params.push_back(paramStruct->name);
+    }
+    return params;
+}
