@@ -38,28 +38,28 @@ TimeSeries::TimeSeries(const char *CSVfileName) {
 }
 
 vector<float> TimeSeries::GetParameterVals(const string &param) const {
-    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        if (!paramStruct->name.compare(param)) {
-            return paramStruct->vals;
+    for (auto it = m_table.begin(); it != m_table.end(); ++it) {
+        if (!it->name.compare(param)) {
+            return it->vals;
         }
     }
+    return vector<float>();
 }
 
 vector<float> TimeSeries::GetValuesAtTime(unsigned int zeroBasedTime) {
     vector<float> valuesAtTime;
-    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        valuesAtTime.push_back(paramStruct->vals[zeroBasedTime]);
+    for (auto it = m_table.begin(); it != m_table.end(); ++it) {
+        valuesAtTime.push_back(it->vals[zeroBasedTime]);
     }
     return valuesAtTime;
 }
 
 
 void TimeSeries::PrintTable() {
-    vector<string> names = GetParameters();
     int numOfParams = GetNumOfParameters();
     vector<float> row;
-    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        std::cout << (paramStruct->name);
+    for (auto it = m_table.begin(); it != m_table.end(); ++it) {
+        std::cout << (it->name);
         cout<<"\t";
     }
 
@@ -81,18 +81,14 @@ void TimeSeries::PrintTable() {
 }
 
 
-vector<string> TimeSeries::GetParameters() const {
+vector<string> TimeSeries::GetParameterNames() const {
     vector<string> params;
-    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        params.push_back(paramStruct->name);
+    for (auto it = m_table.begin(); it != m_table.end(); ++it) {
+        params.push_back(it->name);
     }
     return params;
 }
 
-int TimeSeries::GetNumOfParameters() const {
-    int counter = 0;
-    for (auto paramStruct = std::begin(m_table); paramStruct != std::end(m_table); ++paramStruct) {
-        counter++;
-    }
-    return counter;
+unsigned int TimeSeries::GetNumOfParameters() const {
+    return m_table.size();
 }

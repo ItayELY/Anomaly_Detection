@@ -12,45 +12,58 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector(void) {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
-    vector<string> paramNames = ts.TimeSeries::GetParameters();
+    vector<string> paramNames = ts.GetParameterNames();
     int numOfParams = paramNames.size();
     //iterate through the feature couples:
     for (int i = 0; i < numOfParams; ++i) {
-        vector<float> vals1 = ts.TimeSeries::GetParameterVals(paramNames[i]);
-        float m = 0.9, c = -1;
-        for (int j = 0; j < numOfParams; ++j) {
-            std::vector<float> vals2 = ts.TimeSeries::GetParameterVals(paramNames[j]);
-            float pear =  pearson(vals1, vals2, vals1.size());
-            pear = fabs(pear);
-            //add if corelated:
-            if (pear > m){
-                m = pear;
-                c = j;
-                correlatedFeatures corf;
-                corf.corrlation = pear;
-                corf.feature1 = paramNames[i];
-                corf.feature2 = paramNames[j];
-                //get linear regression:
-                vector<float> pointsOf1= ts.TimeSeries::GetParameterVals(paramNames[i]);
-                vector<float> pointsOf2= ts.TimeSeries::GetParameterVals(paramNames[j]);
-                vector<Point> points;
-                //get points for the line:
-                for (int k = 0; k < pointsOf1.size(); ++k) {
-                    points.push_back(Point(pointsOf1[k], pointsOf2[k]));
-                }
-                corf.lin_reg = linear_reg(points, points.size());
-                int maxDev = 0;
-                //check for max threshold:
-                for (int k = 0; k < pointsOf1.size(); ++k) {
-                    if(dev(points[k], corf.lin_reg) > maxDev){
-                        maxDev = dev(points[k], corf.lin_reg);
-                    }
-                }
-                corf.threshold = maxDev;
-                cf.push_back(corf);
-            }
+        vector<float> pivotVals = ts.GetParameterVals(paramNames[i]);
+        FindCorrelatiosOfParam(pivotVals, i, ts);
+    }
+}
+
+void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int pivotIndex, const TimeSeries& ts)
+{
+    float maxPear = -1;
+    int maxIndex = -1;
+    std::vector<float> maxVals;
+
+    vector<string> paramNames = ts.GetParameterNames();
+    float pearsonThresh = 0.9;
+
+    //find the param that is most correlated to the pivot
+    for (int j = pivotIndex + 1; j < ts.GetNumOfParameters(); ++j) {
+        maxVals = ts.GetParameterVals(paramNames[j]);
+        float pear = fabs(pearson(pivotVals.data(), maxVals.data(), pivotVals.size()));
+        //add if corelated:
+        if ((pear >= pearsonThresh) && (pear > maxPear)) {
+            maxIndex = j;
+            maxPear = pear;
         }
     }
+    if (maxIndex < 0)
+        return;
+
+    //now we know that pivotIndex and maxIndex are correlated
+    correlatedFeatures corr;
+    corr.feature1 = paramNames[pivotIndex];
+    corr.feature2 = paramNames[maxIndex];
+    corr.corrlation = maxPear;
+
+    vector<Point> points;
+    for (int k = 0; k < pivotVals.size(); ++k)
+    points.push_back(Point(pivotVals[k], maxVals[k]));
+    auto tmp = points.data();
+    corr.lin_reg = linear_reg(&tmp, points.size());
+
+    int maxDev = 0;
+    //check for max dev:
+    for (int k = 0; k < pivotVals.size(); ++k) {
+        float d = dev(points[k], corr.lin_reg);
+        if(d > maxDev)
+            maxDev = d;
+    }
+    corr.threshold = maxDev;
+    m_cf.push_back(corr);
 }
 /*
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
