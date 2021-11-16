@@ -14,6 +14,7 @@ class AnomalyReport{
 public:
 	const string description;
 	const long timeStep;
+	AnomalyReport() : timeStep(0) {}
 	AnomalyReport(string description, long timeStep):description(description),timeStep(timeStep){}
 };
 

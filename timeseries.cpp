@@ -46,12 +46,20 @@ vector<float> TimeSeries::GetParameterVals(const string &param) const {
     return vector<float>();
 }
 
-vector<float> TimeSeries::GetValuesAtTime(unsigned int zeroBasedTime) {
+vector<float> TimeSeries::GetValuesAtTime(unsigned int oneBasedTime) {
     vector<float> valuesAtTime;
     for (auto it = m_table.begin(); it != m_table.end(); ++it) {
-        valuesAtTime.push_back(it->vals[zeroBasedTime]);
+        valuesAtTime.push_back(it->vals[oneBasedTime]);
     }
     return valuesAtTime;
+}
+
+float TimeSeries::GetValuesOfFeatureAtTime(unsigned int oneBasedTime, const string& param) const{
+    for (auto it = m_table.begin(); it != m_table.end(); ++it) {
+        if (!it->name.compare(param)) {
+            return it->vals[oneBasedTime];
+        }
+    }
 }
 
 
@@ -91,4 +99,8 @@ vector<string> TimeSeries::GetParameterNames() const {
 
 unsigned int TimeSeries::GetNumOfParameters() const {
     return m_table.size();
+}
+
+unsigned int TimeSeries::GetTimeOfLife() const {
+    return m_table[0].vals.size();
 }

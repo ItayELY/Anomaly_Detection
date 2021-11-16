@@ -26,7 +26,8 @@ public:
 
 	virtual void learnNormal(const TimeSeries& ts);
     void FindCorrelatiosOfParam(vector<float>& pivotVals, int pivotIndex, const TimeSeries& ts);
-	//virtual vector<AnomalyReport> detect(const TimeSeries& ts);
+    vector<Point> createAllPoints(const TimeSeries& ts, unsigned int zeroBasedTime);
+	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 
 	vector<correlatedFeatures> getNormalModel(){
 		return m_cf;

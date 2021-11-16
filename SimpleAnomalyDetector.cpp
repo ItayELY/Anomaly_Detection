@@ -58,18 +58,39 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
     auto tmp = points.data();
     corr.lin_reg = linear_reg(&tmp, points.size());
 
-    int maxDev = 0;
+    float maxDev = 0;
     //check for max dev:
     for (int k = 0; k < pivotVals.size(); ++k) {
         float d = dev(points[k], corr.lin_reg);
         if(d > maxDev)
             maxDev = d;
     }
-    corr.threshold = maxDev;
+    corr.threshold = maxDev * 1.1;
     m_cf.push_back(corr);
 }
-/*
+
+//vector<Point> SimpleAnomalyDetector::createAllPoints(const TimeSeries& ts, unsigned int zeroBasedTime){
+//    vector<Point> points;
+//    for (auto it = m_cf.begin(); it != m_cf.end(); ++it) {
+//        float x = ts.GetValuesOfFeatureAtTime(zeroBasedTime, it->feature1);
+//        float y = ts.GetValuesOfFeatureAtTime(zeroBasedTime, it->feature2);
+//        points.push_back(Point(x, y));
+//    }
+//    return points
+//}
+
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
-	// TODO Auto-generated destructor stub
+    vector<AnomalyReport> reports;
+    unsigned int end = ts.GetTimeOfLife();
+    for (auto it = m_cf.begin(); it != m_cf.end(); ++it) {
+        for (int i = 0; i < end; i++) {
+            float x = ts.GetValuesOfFeatureAtTime(i, it->feature1);
+            float y = ts.GetValuesOfFeatureAtTime(i, it->feature2);
+            if(dev(Point(x, y), it->lin_reg) > it->threshold){
+                AnomalyReport report(it->feature1 + "-" + it->feature2,i+1);
+                reports.push_back(report);
+            }
+        }
+    }
+    return reports;
 }
-*/
