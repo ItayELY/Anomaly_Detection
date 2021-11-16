@@ -29,7 +29,6 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
 
     vector<string> paramNames = ts.GetParameterNames();
     float pearsonThresh = 0.9;
-
     //find the param that is most correlated to the pivot
     for (int j = pivotIndex + 1; j < ts.GetNumOfParameters(); ++j) {
         maxVals = ts.GetParameterVals(paramNames[j]);
@@ -43,6 +42,8 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
     if (maxIndex < 0)
         return;
 
+    maxVals = ts.GetParameterVals((ts.GetParameterNames()[maxIndex]));
+
     //now we know that pivotIndex and maxIndex are correlated
     correlatedFeatures corr;
     corr.feature1 = paramNames[pivotIndex];
@@ -50,8 +51,10 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
     corr.corrlation = maxPear;
 
     vector<Point> points;
-    for (int k = 0; k < pivotVals.size(); ++k)
-    points.push_back(Point(pivotVals[k], maxVals[k]));
+    for (int i = 0; i < pivotVals.size(); ++i)
+    {
+        points.push_back(Point(pivotVals[i], maxVals[i]));
+    }
     auto tmp = points.data();
     corr.lin_reg = linear_reg(&tmp, points.size());
 
