@@ -13,15 +13,26 @@ Circle circleFrom3Points(Point* p1, Point* p2, Point* p3){
         Point* center = new Point(((cy * B - by * C) / (2 * D)) + p1->x,
                                             ((bx * C - cx * B) / (2 * D)) + p1->y);
 
-        return Circle(*center, pointsDistance(center, p1));
+        return {*center, pointsDistance(center, p1)};
 
 }
+
 Circle minCircleFrom2Points(Point* p1, Point* p2){
     Point cen((p1->x + p2->x) / 2.0, (p1->y + p2->y) / 2.0);
     return Circle(cen, (pointsDistance(p1, p2) / 2));
 }
-double pointsDistance(Point *p1, Point *p2){
-    double distance = sqrt(pow(p1->x - p2->x, 2) + pow(p1->y - p2->y, 2));
+
+bool arePointsInCircle(Point** points, size_t size, Circle c){
+    for (int i = 0; i < size; ++i) {
+        if (!isInCircle(points[i], c)){
+            return false;
+        }
+    }
+    return true;
+}
+
+float pointsDistance(Point *p1, Point *p2){
+    float distance = sqrt(pow(p1->x - p2->x, 2) + pow(p1->y - p2->y, 2));
     return distance;
 }
 
