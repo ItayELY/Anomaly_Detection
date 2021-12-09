@@ -24,6 +24,7 @@ public:
 // --------------------------------------
 
 Circle findMinCircle(Point** points,size_t size);
-
+double pointsDistance(Point* p1, Point* p2);
+bool isInCircle(Point* p, Circle* c);
 
 #endif /* MINCIRCLE_H_ */
