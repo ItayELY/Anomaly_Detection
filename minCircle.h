@@ -25,6 +25,7 @@ public:
 
 Circle findMinCircle(Point** points,size_t size);
 Circle circleFrom3Points(Point* p1, Point* p2, Point* p3);
+Circle minCircleFrom2Points(Point* p1, Point* p2);
 double pointsDistance(Point* p1, Point* p2);
 bool isInCircle(Point* p, Circle* c);
 

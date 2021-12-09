@@ -16,7 +16,10 @@ Circle circleFrom3Points(Point* p1, Point* p2, Point* p3){
         return Circle(*center, pointsDistance(center, p1));
 
 }
-
+Circle minCircleFrom2Points(Point* p1, Point* p2){
+    Point cen((p1->x + p2->x) / 2.0, (p1->y + p2->y) / 2.0);
+    return Circle(cen, (pointsDistance(p1, p2) / 2));
+}
 double pointsDistance(Point *p1, Point *p2){
     double distance = sqrt(pow(p1->x - p2->x, 2) + pow(p1->y - p2->y, 2));
     return distance;
