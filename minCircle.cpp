@@ -36,11 +36,37 @@ float pointsDistance(Point *p1, Point *p2){
     return distance;
 }
 
-bool isInCircle(Point* p, Circle* c){
-    return (pointsDistance(p, &(c->center)) <= c->radius);
+bool isInCircle(Point* p, Circle c){
+    return (pointsDistance(p, &(c.center)) <= c.radius);
 }
-/*
-Circle findMinCircle(Point** points,size_t size){
 
+Circle findMinCircle(Point** points,size_t size){
+    Circle minCircle(Point(0, 0), INFINITY);
+
+    //find minimum between each 2 points
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            Circle cir = minCircleFrom2Points(points[i], points[j]);
+            if (arePointsInCircle(points, size, cir)){
+                if (cir.radius < minCircle.radius){
+                    minCircle = cir;
+                }
+            }
+        }
+
+    }
+    //find minimum between each 3 points
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            for (int k = 0; k < size; ++k) {
+                Circle cir = circleFrom3Points(points[i], points[j], points[k]);
+                if (arePointsInCircle(points, size, cir)){
+                    if (cir.radius < minCircle.radius){
+                        minCircle = cir;
+                    }
+                }
+            }
+        }
+    }
+    return minCircle;
 }
- */
