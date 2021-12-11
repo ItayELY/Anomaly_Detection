@@ -29,5 +29,7 @@ Circle minCircleFrom2Points(Point* p1, Point* p2);
 bool arePointsInCircle(Point** points, size_t size, Circle c);
 float pointsDistance(Point* p1, Point* p2);
 bool isInCircle(Point* p, Circle c);
+int orientationOf3Points(Point* p1, Point* p2, Point* p3);
+vector<Point*> findConvexHall(Point** points, size_t size);
 
 #endif /* MINCIRCLE_H_ */

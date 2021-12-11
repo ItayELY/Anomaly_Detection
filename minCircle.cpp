@@ -40,13 +40,62 @@ bool isInCircle(Point* p, Circle c){
     return (pointsDistance(p, &(c.center)) <= c.radius);
 }
 
+int orientationOf3Points(Point* p1, Point* p2, Point* p3){
+    int ori = ((p2->y - p1->y) * (p3->x - p2->x)) - ((p2->x - p1->x) * (p3->y - p2->y));
+    if (ori > 0){
+        return 1;
+    }
+    if (ori < 0){
+        return 2;
+    }
+    return ori;
+}
+
+vector<Point*> findConvexHall(Point** points, size_t size){
+    vector<Point*> result(0);
+    if (size < 3){
+        for (int i = 0; i < size; ++i) {
+            result.push_back(points[i]);
+        }
+        return result;
+    }
+
+    int leftMostIndx = 0;
+    //find leftmost index:
+    for (int i = 1; i < size; ++i) {
+        if (points[i]->x < points[leftMostIndx]->x){
+            leftMostIndx = i;
+        }
+    }
+    int p1 = leftMostIndx, p2;
+    //go counter-clockwise and add the relevant points to result
+    do{
+        //add current point
+        result.push_back(points[p1]);
+        //find the most counter-clockwise point to p1
+        p2 = (p1 + 1)%size;
+        for (int i = 0; i < size; ++i) {
+            //if new point more counter-clockwise then update
+            if (orientationOf3Points(points[p1], points[p2], points[i]) == 2){
+                p2 = i;
+            }
+        }
+        //new relevant point
+        p1 = p2;
+    }while (p1 != leftMostIndx);//while we don't return to the start
+
+    return  result;
+}
+
+
 Circle findMinCircle(Point** points,size_t size){
     Circle minCircle(Point(0, 0), INFINITY);
 
+    vector<Point*> betterPoints = findConvexHall(points, size);
     //find minimum between each 2 points
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            Circle cir = minCircleFrom2Points(points[i], points[j]);
+    for (int i = 0; i < betterPoints.size(); ++i) {
+        for (int j = 0; j < betterPoints.size(); ++j) {
+            Circle cir = minCircleFrom2Points(betterPoints[i], betterPoints[j]);
             if (arePointsInCircle(points, size, cir)){
                 if (cir.radius < minCircle.radius){
                     minCircle = cir;
@@ -56,10 +105,10 @@ Circle findMinCircle(Point** points,size_t size){
 
     }
     //find minimum between each 3 points
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            for (int k = 0; k < size; ++k) {
-                Circle cir = circleFrom3Points(points[i], points[j], points[k]);
+    for (int i = 0; i < betterPoints.size(); ++i) {
+        for (int j = i; j < betterPoints.size(); ++j) {
+            for (int k = j; k < betterPoints.size(); ++k) {
+                Circle cir = circleFrom3Points(betterPoints[i], betterPoints[j], betterPoints[k]);
                 if (arePointsInCircle(points, size, cir)){
                     if (cir.radius < minCircle.radius){
                         minCircle = cir;
