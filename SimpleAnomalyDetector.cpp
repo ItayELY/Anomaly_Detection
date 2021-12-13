@@ -21,6 +21,16 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
     }
 }
 
+bool SimpleAnomalyDetector::areCorrelated(vector<float> &pivotVals, vector<float> &maxVals, float maxPear) {
+    float pearsonThresh = 0.9;
+    float pear = fabs(pearson(pivotVals.data(), maxVals.data(), pivotVals.size()));
+    //add if corelated:
+    if ((pear >= pearsonThresh) && (pear > maxPear)) {
+        return true;
+    }
+    return false;
+}
+
 void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int pivotIndex, const TimeSeries& ts)
 {
     float maxPear = -1;
@@ -28,13 +38,12 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
     std::vector<float> maxVals;
 
     vector<string> paramNames = ts.GetParameterNames();
-    float pearsonThresh = 0.9;
     //find the param that is most correlated to the pivot
     for (int j = pivotIndex + 1; j < ts.GetNumOfParameters(); ++j) {
         maxVals = ts.GetParameterVals(paramNames[j]);
         float pear = fabs(pearson(pivotVals.data(), maxVals.data(), pivotVals.size()));
         //add if corelated:
-        if ((pear >= pearsonThresh) && (pear > maxPear)) {
+        if (areCorrelated(pivotVals, maxVals, maxPear)) {
             maxIndex = j;
             maxPear = pear;
         }
@@ -56,28 +65,27 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
         points.push_back(Point(pivotVals[i], maxVals[i]));
     }
     auto tmp = points.data();
-    corr.lin_reg = linear_reg(&tmp, points.size());
+    findThresh(tmp, points.size(), corr);
+    m_cf.push_back(corr);
+}
 
+float SimpleAnomalyDetector::findThresh(Point* points, int size, correlatedFeatures& corr) {
+    corr.lin_reg = linear_reg(&points, size);
     float maxDev = 0;
     //check for max dev:
-    for (int k = 0; k < pivotVals.size(); ++k) {
+    for (int k = 0; k < size; ++k) {
         float d = dev(points[k], corr.lin_reg);
         if(d > maxDev)
             maxDev = d;
     }
     corr.threshold = maxDev * 1.1;
-    m_cf.push_back(corr);
+    return maxDev * 1.1;
 }
 
-//vector<Point> SimpleAnomalyDetector::createAllPoints(const TimeSeries& ts, unsigned int zeroBasedTime){
-//    vector<Point> points;
-//    for (auto it = m_cf.begin(); it != m_cf.end(); ++it) {
-//        float x = ts.GetValuesOfFeatureAtTime(zeroBasedTime, it->feature1);
-//        float y = ts.GetValuesOfFeatureAtTime(zeroBasedTime, it->feature2);
-//        points.push_back(Point(x, y));
-//    }
-//    return points
-//}
+bool SimpleAnomalyDetector::isAnomaly(correlatedFeatures &corr, float x, float y) {
+    bool result = (dev(Point(x, y), corr.lin_reg) > corr.threshold);
+    return result;
+}
 
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> reports;
@@ -86,11 +94,13 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
         for (int i = 0; i < end; i++) {
             float x = ts.GetValuesOfFeatureAtTime(i, it->feature1);
             float y = ts.GetValuesOfFeatureAtTime(i, it->feature2);
-            if(dev(Point(x, y), it->lin_reg) > it->threshold){
+
+            if(isAnomaly(it.operator*(), x, y)){
                 AnomalyReport report(it->feature1 + "-" + it->feature2,i+1);
                 reports.push_back(report);
             }
         }
+
     }
     return reports;
 }
