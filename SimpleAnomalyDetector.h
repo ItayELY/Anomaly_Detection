@@ -35,7 +35,7 @@ public:
     virtual float findThresh(Point* points, int size, correlatedFeatures& corr);
 
     virtual bool isAnomaly(correlatedFeatures& corr, float x, float y);
-	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
+    vector<AnomalyReport> detect(const TimeSeries& ts);
 
 
 	vector<correlatedFeatures> getNormalModel(){
