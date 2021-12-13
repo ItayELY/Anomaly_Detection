@@ -2,7 +2,8 @@
 // Created by itaye on 09/12/2021.
 //
 #include "minCircle.h"
-
+#include <math.h>
+#define INFINITY 9999999999
 Circle circleFrom3Points(Point* p1, Point* p2, Point* p3){
         float bx = p2->x - p1->x, by = p2->y - p1->y
                 , cx = p3->x - p1->x, cy = p3->y - p1->y;
