@@ -1,6 +1,5 @@
-//
-// Created by itaye on 09/12/2021.
-//
+// Created By Itay Elyashev, id:212356364
+// And Yonadav Leibowitz, id:207424490
 #include "minCircle.h"
 #include <math.h>
 #define INFINITY 9999999999

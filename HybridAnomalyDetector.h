@@ -1,6 +1,5 @@
-//
-// Created by itaye on 13/12/2021.
-//
+// Created By Itay Elyashev, id:212356364
+// And Yonadav Leibowitz, id:207424490
 
 #ifndef ANOMALY_DETECTION_HYBRIDANOMALYDETECTOR_H
 #define ANOMALY_DETECTION_HYBRIDANOMALYDETECTOR_H

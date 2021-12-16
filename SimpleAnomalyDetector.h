@@ -1,4 +1,5 @@
-
+// Created By Itay Elyashev, id:212356364
+// And Yonadav Leibowitz, id:207424490
 
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_
