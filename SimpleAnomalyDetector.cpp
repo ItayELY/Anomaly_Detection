@@ -65,7 +65,7 @@ void SimpleAnomalyDetector::FindCorrelatiosOfParam(vector<float>& pivotVals, int
         points.push_back(Point(pivotVals[i], maxVals[i]));
     }
     auto tmp = points.data();
-    findThresh(tmp, points.size(), corr);
+    findThresh(points.data(), points.size(), corr);
     m_cf.push_back(corr);
 }
 
