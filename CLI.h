@@ -15,6 +15,7 @@ class CLI {
     // you can add data members
     Command* cmds[6];
     HybridAnomalyDetector anomalyDetector;
+    vector<AnomalyReport> report;
 public:
     CLI(DefaultIO* dio);
     void printMenu();

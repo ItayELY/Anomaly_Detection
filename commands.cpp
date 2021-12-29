@@ -33,14 +33,16 @@ void DetectAnomaliesCommand::execute() {
     DefaultIO* dio = getDio();
     TimeSeries ts("train.csv");
     anomalyDetector.learnNormal(ts);
+    *report = anomalyDetector.detect("test.csv");
     dio->write("anomaly detection complete.\n");
 }
 
 void DisplayAnomaliesCommand::execute() {
     DefaultIO* dio = getDio();
-    TimeSeries ts("train.csv");
-    anomalyDetector.learnNormal(ts);
-    dio->write("anomaly detection complete.\n");
+    for (auto  it = report->begin(); it != report->end(); ++it) {
+        dio->write(to_string(it->timeStep) + "   " + it->description + "\n");
+    }
+    dio->write("done.\n");
 }
 
 
