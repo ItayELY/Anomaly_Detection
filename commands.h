@@ -31,10 +31,10 @@ public:
 // you may edit this class
 class Command{
     DefaultIO* dio;
-public:
     string description;
+public:
     Command(DefaultIO* dio, string description):dio(dio), description(description){}
-    virtual string getDescription() = 0;
+    string getDescription();
     DefaultIO* getDio(){return  dio;}
     virtual void execute()=0;
     virtual ~Command(){}
@@ -44,7 +44,15 @@ public:
 class UploadCommand: public Command{
 public:
     UploadCommand(DefaultIO* dio, string description): Command(dio, description){};
-    string getDescription();
+
+    void execute();
+};
+
+class SettingCommand: public Command{
+    HybridAnomalyDetector anomalyDetector;
+public:
+    SettingCommand(DefaultIO* dio, string description, HybridAnomalyDetector anomalyDetector):
+        Command(dio, description), anomalyDetector(anomalyDetector){};
     void execute();
 };
 #endif //ANOMALY_DETECTION_COMMANDS_H

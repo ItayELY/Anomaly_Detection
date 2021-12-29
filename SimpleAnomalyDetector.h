@@ -23,10 +23,13 @@ struct correlatedFeatures{
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 	vector<correlatedFeatures> m_cf;
+	float pearThresh = 0.9;
 public:
 	SimpleAnomalyDetector();
 	virtual ~SimpleAnomalyDetector();
 
+    float getPearThresh(){return pearThresh;};
+    void setPearThresh(float pearThresh){this->pearThresh = pearThresh;}
 	void learnNormal(const TimeSeries& ts);
     void FindCorrelatiosOfParam(vector<float>& pivotVals, int pivotIndex, const TimeSeries& ts);
     vector<Point> createAllPoints(const TimeSeries& ts, unsigned int zeroBasedTime);

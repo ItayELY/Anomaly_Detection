@@ -24,7 +24,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
 }
 
 bool SimpleAnomalyDetector::areCorrelated(vector<float> &pivotVals, vector<float> &maxVals, float maxPear) {
-    float pearsonThresh = 0.9;
+    float pearsonThresh = pearThresh;
     float pear = fabs(pearson(pivotVals.data(), maxVals.data(), pivotVals.size()));
     //add if corelated:
     if ((pear >= pearsonThresh) && (pear > maxPear)) {

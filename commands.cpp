@@ -4,7 +4,7 @@
 
 #include "commands.h"
 
-string UploadCommand::getDescription() {
+string Command::getDescription() {
     return description;
 }
 
@@ -17,6 +17,16 @@ void UploadCommand::execute() {
     dio->write("Please upload your local test CSV file.\n");
     dio->downloadFile("test");
     dio->write("Upload complete.\n");
+}
+
+void SettingCommand::execute() {
+    DefaultIO* dio = getDio();
+    dio->write("The current correlation threshold is " + to_string(anomalyDetector.getPearThresh()) + "\n");
+    float newThresh = stof(dio->read());
+    while (newThresh < 0 || newThresh > 1){
+        dio->write("please choose a value between 0 and 1.”\n");
+    }
+    anomalyDetector.setPearThresh(newThresh);
 }
 
 
