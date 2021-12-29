@@ -19,6 +19,10 @@ void CLI::printMenu() {
 
 void CLI::start(){
     printMenu();
+    string choice = dio->read();
+    if (choice == "1"){
+        cmds[0]->execute();
+    }
 }
 
 
