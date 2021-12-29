@@ -24,9 +24,23 @@ void SettingCommand::execute() {
     dio->write("The current correlation threshold is " + to_string(anomalyDetector.getPearThresh()) + "\n");
     float newThresh = stof(dio->read());
     while (newThresh < 0 || newThresh > 1){
-        dio->write("please choose a value between 0 and 1.”\n");
+        dio->write("please choose a value between 0 and 1.\n");
     }
     anomalyDetector.setPearThresh(newThresh);
+}
+
+void DetectAnomaliesCommand::execute() {
+    DefaultIO* dio = getDio();
+    TimeSeries ts("train.csv");
+    anomalyDetector.learnNormal(ts);
+    dio->write("anomaly detection complete.\n");
+}
+
+void DisplayAnomaliesCommand::execute() {
+    DefaultIO* dio = getDio();
+    TimeSeries ts("train.csv");
+    anomalyDetector.learnNormal(ts);
+    dio->write("anomaly detection complete.\n");
 }
 
 

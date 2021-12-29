@@ -8,6 +8,7 @@ CLI::CLI(DefaultIO* dio):dio(dio) {
         cmds[i] = new UploadCommand(dio, "upload a time series csv file");
     }
     cmds[1] = new SettingCommand(dio, "algorithm settings", this->anomalyDetector);
+    cmds[2] = new DetectAnomaliesCommand(dio, "detect anomalies", this->anomalyDetector);
 }
 
 void CLI::printMenu() {
@@ -27,6 +28,9 @@ void CLI::start(){
         }
         if (choice == "2"){
             cmds[1]->execute();
+        }
+        if (choice == "3"){
+            cmds[2]->execute();
         }
         printMenu();
         choice = dio->read();

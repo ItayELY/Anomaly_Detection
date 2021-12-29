@@ -55,4 +55,20 @@ public:
         Command(dio, description), anomalyDetector(anomalyDetector){};
     void execute();
 };
+
+class DetectAnomaliesCommand: public Command{
+    HybridAnomalyDetector anomalyDetector;
+public:
+    DetectAnomaliesCommand(DefaultIO* dio, string description, HybridAnomalyDetector anomalyDetector):
+    Command(dio, description), anomalyDetector(anomalyDetector){};
+    void execute();
+};
+
+class DisplayAnomaliesCommand: public Command{
+    HybridAnomalyDetector anomalyDetector;
+public:
+    DisplayAnomaliesCommand(DefaultIO* dio, string description, HybridAnomalyDetector anomalyDetector):
+            Command(dio, description), anomalyDetector(anomalyDetector){};
+    void execute();
+};
 #endif //ANOMALY_DETECTION_COMMANDS_H
