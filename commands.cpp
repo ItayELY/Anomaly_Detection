@@ -142,8 +142,26 @@ void AnalizeResultCommand::execute() {
             fp++;
         }
     }
-    dio->write("True Positive Rate: " + to_string((float)tp/p) + "\n");
-    dio->write("False Positive Rate: " + to_string((float)fp/(n)) + "\n");
+
+    string strTrue = to_string((float)tp/p);
+    while (strTrue[strTrue.size() - 1] == '0' || strTrue[strTrue.size() - 1] == '.'){
+        if(strTrue[strTrue.size() - 1] == '.'){
+            strTrue.resize(strTrue.size() - 1);
+            break;
+        }
+        strTrue.resize(strTrue.size() - 1);
+    }
+
+    string strFalse = to_string((float)fp/(n));
+    while (strFalse[strFalse.size() - 1] == '0' || strFalse[strFalse.size() - 1] == '.'){
+        if(strFalse[strFalse.size() - 1] == '.'){
+            strFalse.resize(strFalse.size() - 1);
+            break;
+        }
+        strFalse.resize(strFalse.size() - 1);
+    }
+    dio->write("True Positive Rate: " + strTrue + "\n");
+    dio->write("False Positive Rate: " + strFalse + "\n");
 }
 
 
