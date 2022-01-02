@@ -1,7 +1,7 @@
 //
 // Created by itaye on 29/12/2021.
 //
-
+/*
 #include "commands.h"
 
 string Command::getDescription() {
@@ -176,3 +176,5 @@ void DefaultIO::downloadFile(string name) {
     }
     file.close();
 }
+
+*/
