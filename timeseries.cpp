@@ -32,7 +32,6 @@ TimeSeries::TimeSeries(const char *CSVfileName) {
         while (std::getline(line, paramVal, delimiter)) {
             m_table[counter].vals.push_back(stof(paramVal));
             counter++;
-
         }
     }
 }

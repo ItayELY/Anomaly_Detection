@@ -13,7 +13,7 @@ using namespace std;
 class CLI {
     DefaultIO* dio;
     // you can add data members
-    Command* cmds[6];
+    Command* cmds[5];
     HybridAnomalyDetector anomalyDetector;
     vector<AnomalyReport> report;
 public:

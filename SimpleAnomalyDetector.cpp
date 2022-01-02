@@ -14,6 +14,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector(void) {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts) {
+    lifeTime = ts.GetTimeOfLife();
     vector<string> paramNames = ts.GetParameterNames();
     int numOfParams = paramNames.size();
     //iterate through the feature couples:
@@ -91,6 +92,7 @@ bool SimpleAnomalyDetector::isAnomaly(correlatedFeatures &corr, float x, float y
 
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> reports;
+    lifeTime = ts.GetTimeOfLife();
     unsigned int end = ts.GetTimeOfLife();
     for (auto it = m_cf.begin(); it != m_cf.end(); ++it) {
         for (int i = 0; i < end; i++) {

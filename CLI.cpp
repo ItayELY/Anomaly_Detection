@@ -4,21 +4,23 @@
 #include "CLI.h"
 
 CLI::CLI(DefaultIO* dio):dio(dio) {
-    for (int i = 0; i < 6; ++i) {
-        cmds[i] = new UploadCommand(dio, "upload a time series csv file");
-    }
-    cmds[1] = new SettingCommand(dio, "algorithm settings", this->anomalyDetector);
-    cmds[2] = new DetectAnomaliesCommand(dio, "detect anomalies", this->anomalyDetector,
-                                         report);
-    cmds[3] = new DisplayAnomaliesCommand(dio, "display anomalies",report);
+    int lifeTime = 0;
+    cmds[0] = new UploadCommand(dio, "upload a time series csv file");
+    cmds[1] = new SettingCommand(dio, "algorithm settings", anomalyDetector);
+    cmds[2] = new DetectAnomaliesCommand(dio, "detect anomalies", anomalyDetector,
+                                         report, lifeTime);
+    cmds[3] = new DisplayAnomaliesCommand(dio, "display results",report);
+    cmds[4] = new AnalizeResultCommand(dio, "upload anomalies and analyze results",report,
+                                       anomalyDetector);
 }
 
 void CLI::printMenu() {
     dio->write("Welcome to the Anomaly Detection Server.\nPlease choose an option:\n");
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 5; ++i) {
         dio->write(i+1);
-        dio->write(". " + (cmds[i])->getDescription() + "\n");
+        dio->write("." + (cmds[i])->getDescription() + "\n");
     }
+    dio->write("6.exit\n");
 }
 
 void CLI::start(){
@@ -33,9 +35,13 @@ void CLI::start(){
         }
         if (choice == "3"){
             cmds[2]->execute();
+            choice = "3";
         }
         if (choice == "4"){
             cmds[3]->execute();
+        }
+        if (choice == "5"){
+            cmds[4]->execute();
         }
         printMenu();
         choice = dio->read();

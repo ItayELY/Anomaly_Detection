@@ -8,10 +8,24 @@
 #include <string.h>
 
 #include <fstream>
+#include <sstream>
+
 #include <vector>
 #include "HybridAnomalyDetector.h"
 
 using namespace std;
+
+struct PositiveAnomaly
+{
+    float start, end;
+    bool isFalse = true;
+};
+
+struct JoinedAnomaly
+{
+    string description;
+    float start, end;
+};
 
 class DefaultIO{
 public:
@@ -59,10 +73,11 @@ public:
 class DetectAnomaliesCommand: public Command{
     HybridAnomalyDetector anomalyDetector;
     vector<AnomalyReport>* report;
+    int lifeTime;
 public:
     DetectAnomaliesCommand(DefaultIO* dio, string description, HybridAnomalyDetector anomalyDetector,
-                           vector<AnomalyReport>& report):
-    Command(dio, description), anomalyDetector(anomalyDetector), report(&report){};
+                           vector<AnomalyReport>& report, int& lifeTime):
+    Command(dio, description), anomalyDetector(anomalyDetector), report(&report), lifeTime(lifeTime){};
     void execute();
 };
 
@@ -72,5 +87,21 @@ public:
     DisplayAnomaliesCommand(DefaultIO* dio, string description, vector<AnomalyReport>& report):
             Command(dio, description), report(&report){};
     void execute();
+};
+
+class AnalizeResultCommand: public Command{
+    HybridAnomalyDetector anomalyDetector;
+    vector<PositiveAnomaly> rAnoms;
+    vector<JoinedAnomaly> jAnoms;
+    vector<AnomalyReport>* report;
+    int n = 0, N = 0, p = 0, anomTime = 0, tp = 0, fp = 0;
+public:
+    AnalizeResultCommand(DefaultIO* dio, string description, vector<AnomalyReport>& report,
+                         HybridAnomalyDetector anomalyDetector): Command(dio, description), report(&report),
+                         anomalyDetector(anomalyDetector){}
+    void setRAnomsp();
+    void setJAnoms();
+    void execute();
+
 };
 #endif //ANOMALY_DETECTION_COMMANDS_H
