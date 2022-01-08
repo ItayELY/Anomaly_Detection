@@ -1,4 +1,5 @@
-
+//Itay Elyashev 212356364
+//Yonadav Leibowitz 207424490
 
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_

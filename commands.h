@@ -1,6 +1,5 @@
-//
-// Created by itaye on 29/12/2021.
-//
+//Itay Elyashev 212356364
+//Yonadav Leibowitz 207424490
 
 #ifndef ANOMALY_DETECTION_COMMANDS_H
 #define ANOMALY_DETECTION_COMMANDS_H
@@ -40,9 +39,8 @@ public:
         string line =read();
         ofstream file;
         file.open(name + ".csv");
-        while (line != "done"){
+        while (line != "done\n"){
             file << line;
-            file << "\n";
             line = read();
         }
         file.close();
@@ -76,10 +74,10 @@ public:
         dio->write("Please upload your local train CSV file.\n");
         dio->downloadFile("train");
         dio->write("Upload complete.\n");
-
         dio->write("Please upload your local test CSV file.\n");
         dio->downloadFile("test");
         dio->write("Upload complete.\n");
+        //dio->write("Upload complete.\n");
     }
 };
 
@@ -106,8 +104,8 @@ class DetectAnomaliesCommand: public Command{
     int lifeTime;
 public:
     DetectAnomaliesCommand(DefaultIO* dio, string description, HybridAnomalyDetector anomalyDetector,
-                           vector<AnomalyReport>& report, int& lifeTime):
-    Command(dio, description), anomalyDetector(anomalyDetector), report(&report), lifeTime(lifeTime){};
+                           vector<AnomalyReport>* report, int& lifeTime):
+    Command(dio, description), anomalyDetector(anomalyDetector), report(report), lifeTime(lifeTime){};
     void execute(){
         DefaultIO* dio = getDio();
         TimeSeries ts("train.csv");
@@ -115,6 +113,7 @@ public:
         *report = anomalyDetector.detect("test.csv");
         lifeTime = anomalyDetector.lifeTime;
         dio->write("anomaly detection complete.\n");
+
     }
 };
 

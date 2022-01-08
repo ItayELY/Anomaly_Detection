@@ -1,6 +1,5 @@
-//
-// Created by itaye on 29/12/2021.
-//
+//Itay Elyashev 212356364
+//Yonadav Leibowitz 207424490
 
 #ifndef ANOMALY_DETECTION_CLI_H
 #define ANOMALY_DETECTION_CLI_H
